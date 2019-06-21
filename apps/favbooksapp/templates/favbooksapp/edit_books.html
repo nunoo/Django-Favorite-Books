@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="container">
+    <nav class="navbar navbar-dark bg-dark text-light">
+      <a class="navbar-brand">Welcome {{ request.session.first_name }}</a>
+      <div>
+      <a href="/books" class="btn btn-success">Home</a>
+      <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+    </nav>
+    <div class="row">
+      <div class="col mt-5">
+
+        <form action="/editbook/{{book.id}}" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="form_edit_title">Title:</label>
+            <input type="text" class='form-control' id='form_edit_title' name='form_edit_title' value="{{book.DBtitle}}">
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "title"  %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          <h6>Added by: {{ book.uploaded_by.DBfirst_name }} {{ book.uploaded_by.DBlast_name }}</h6>
+          <h6>Added on: {{book.created_at}}</h6>
+          <h6>Last updated on: {{book.updated_at}}</h6>
+
+
+          <div class="form-group">
+            <label for="form_edit_description">Description:</label>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "desc"  %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <textarea class="form-control" id="form_edit_description" name="form_edit_description" rows="3">{{book.DBdesc}}</textarea>
+            
+            <button class="btn btn-info mt-1" type="submit">Submit</button>
+            
+          </div>
+        </form>
+        <a href="/delete/{{book.id}}" class="btn btn-danger">Delete</a>
+        
+      </div>
+      <div class="col mt-5">
+        <h1>Users Who Like This Book:</h1>
+        <ul>
+
+
+          {% for user in users %}
+          <li>{{ user.DBfirst_name }} {{ user.DBlast_name }} <a href="/unlike/{{book.id}}">Unfavorite</a></li>
+          {% endfor %}
+        </ul>
+        <a href="/like/{{book.id}}" class="ml-2">Favorite</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

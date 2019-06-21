@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login and Registration</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Login and Registration</h1>
+
+    <div class="row">
+      <div class="col">
+        <form action="/register" method="POST" id="regForm" class="RegistrationForm">
+          {% csrf_token %}
+          <h3>Register here!</h3>
+          <div class="form-group">
+            
+            <label for="first_name">First name:</label>
+            <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First name" value={% if messages.extra_tags == "holdFName" %}{{messages}}{% endif%}>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "first_name" %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last name:</label>
+            <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last name" value={% if messages.extra_tags == "holdLName" %}{{messages}}{% endif%}>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "last_name" %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <div id="emailMsg"></div>
+            <input type="text" name="email" id="email" class="form-control" placeholder="Email" value={% if messages.extra_tags == "holdEmail" %}{{messages}}{% endif%}>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "email" %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "password" %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            <label for="pwconfirm">Confirm Password:</label>
+            <input type="password" name="pwconfirm" id="pwconfirm" class="form-control" placeholder="Confirm Password">
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "confirmpw" %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <input type="submit" class="btn btn-outline-success" value="Register">
+
+        </form>
+      </div>
+      <div class="col">
+        <form action="/login" method="POST">
+          {% csrf_token %}
+          <h3>Login here!</h3>
+          <div class="form-group">
+            <label for="emailLogin">Email:</label>
+            <input type="text" name="emailLogin" id="emailLogin" class="form-control" placeholder="Email" value={% if messages.extra_tags == "holdLoginEmail" %}{{messages}}{% endif%}>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "loginemail" %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            <label for="passwordLogin">Password:</label>
+            <input type="password" name="passwordLogin" id="passwordLogin" class="form-control" placeholder="Password">
+          </div>
+          <input type="submit" class="btn btn-outline-success" value="Login">
+        </form>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

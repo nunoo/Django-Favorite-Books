@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="container">
+    <nav class="navbar navbar-dark bg-dark text-light">
+      <a class="navbar-brand">Welcome {{ request.session.first_name }}</a>
+
+      <div>
+        <a href="/books" class="btn btn-success">Home</a>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+      </div>
+    </nav>
+
+    <div class="row">
+      <div class="col-6 mt-5">
+        <div class="h1">Add a Favorite Book</div>
+
+        <form action="/addbook" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="form_add_title">Title</label>
+            <input type="text" class='form-control' id='form_add_title' name='form_add_title'>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "title"  %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            <label for="form_add_description">Description:</label>
+            <textarea class="form-control" id="form_add_description" name="form_add_description" rows="3"></textarea>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              {% if message.extra_tags == "desc"  %}
+              <li{% if message.tags %} class="text-danger {{ message.tags }}" {% endif %}>{{ message }}
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <button class="btn btn-info mt-1" type="submit">Submit</button>
+            
+
+          </div>
+        </form>
+
+
+      </div>
+      <div class="col-6 mt-5">
+        <div class="h1">All Books</div>
+        {% for book in all_books %}
+        <div>
+          <a href="/books/{{book.id}}">{{book.DBtitle}}</a>
+          <p>(added by {{ book.uploaded_by.DBfirst_name }} {{ book.uploaded_by.DBlast_name }})</p>
+
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+</body>
+
+</html>
